@@ -1,4 +1,5 @@
 'use strict';
+// Homework9
 //Task1
 let codes = [
   'Madam, I’m Adam',
@@ -10,14 +11,12 @@ let codes = [
 ];
 
 function checkCoupon(code) {
+  // Игорь: для массива символов кода лучше использовать новую переменную, т.к. code - строка, а потом превратилась в массив
  code = code.toLowerCase().split(/[^a-z0-9]/i).join('').split('');
  
-if (code.length >= 10 && code.join('') === code.reverse().join('')) {
-  return true;
-} else {
-  return false;
-} 
- 
+ // Игорь: вместе if (condition) { return true; } else { return false; } лучше писать просто return condition. И помните про форматирование.
+
+  return code.length >= 10 && code.join('') === code.reverse().join('');
 }
 
 for (let code of codes) {
@@ -26,13 +25,17 @@ for (let code of codes) {
 }
 console.log('\n'); 
 
+// Игорь (2.1): Добавил пару контрольных примеров. Сейчас a < b && b > c обрабатывается неправильно.
 // Task2 - delete HTML-tags
 const texts = [
   '<strong>Наши</strong> <em>ховерборды</em> лучшие в <u>мире</u>!',
-  '<EM>Световой меч</EM> в <strong>каждый</strong> дом!'
+  '<EM>Световой меч</EM> в <strong>каждый</strong> дом!',
+  'Картиночка: <img />',
+  'a < b && b > c'
 ];
+
 function stripTags(text) {
-  text = text.replace(/<.*?>/g, '');
+  text = text.replace(/<[^\s]\/?[^>]*>/g, ''); //Элла: теперь условие a < b && b > c обрабатывается корректно. 
   return text;
 }
 for (let text of texts) {
@@ -48,20 +51,27 @@ const fields = [
   { name: 'phone', rule: 'phone' },
 ];
 
+// Игорь (3.1): добавил пустой объект для проверки - сейчас он воспринимается как валидный, а должен быть нет.
 const forms = [
   { name: 'Ivan Ivanov', email: 'ivan@test.co', phone: '+79212753690' },
-  { name: 'III', email: 'ivan@test', phone: '11111' }
+  { name: 'III', email: 'ivan@test', phone: '11111' },
+  {}
 ];
 
 function validate(form, validators) {
+  // Игорь: every - очень хорошо
+  if(Object.keys(form).length !== 0) {
   return validators.every(function(validator) {
     if(form.hasOwnProperty(validator.name)) {
       let field = form[validator.name];
     
       if(validator.rule == 'phone') {
-        return field.slice(0, 2) == '+7';
+        // Игорь (3.2): тут нужно добавить проверку длины номера
+        
+         return /^(\+7)(\(\d{3}\)|\d{3})\d{7}$/i.test(field) && field.slice(0, 2) == '+7'; //Элла: добавила проверку длины номера.
+         // Игорь (3.4): домашнее задание про регулярные выражения, поэтому лучше эту проверку сделать через них
       } else if(validator.rule == 'email') {
-        return /[a-z0-9_\-\.]+@[a-z0-9_\-\.]+\.[a-z0-9_\-\.]{2,}/i.test(field);
+        return /^[a-z0-9_\-\.]+@[a-z0-9_\-\.]+\.[a-z0-9_\-\.]{2,}$/i.test(field);
       } else if(validator.rule instanceof RegExp) {
         return validator.rule.test(field);
       }
@@ -71,15 +81,20 @@ function validate(form, validators) {
     
     return true;
   });
+  }
 }
 for (let form of forms) {
   console.log(form);
-  if (validate(form, fields)) {
+  if (validate(form, fields)) {//Элла: пустой объект теперь не будет восприниматься как валидный.
+  // Игорь (3.5): функция validate всё равн овозвращает true и при данном подходе мы не сможем добавлять новые правила валидации добавляя их в массив - нужно будет перечислять поля 2 раза - нужно это обойти.
+    
     console.log('Ошибок нет');
   } else {
+  
     console.log('Форма заполнена не верно');
   }
 }
+
 
 
 /*Домашнее задание к лекции 2.3 «Регулярные выражения»
