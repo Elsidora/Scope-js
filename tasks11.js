@@ -1,12 +1,7 @@
 //Homework11 (Lecture2.5), 
 'use strict';
-//Task1
 const clients = [{
-<<<<<<< HEAD
   name: 'Филип Фрай', 
-=======
-  name: 'Филип Фрай',
->>>>>>> fcec1b679d4fdebdac5e438ad35b7d7f839a4892
   email: 'fray@mail.un',
   isSubscribed: false,
   orders: [ 11700, 1980, 450, 5500 ]
@@ -22,18 +17,11 @@ const clients = [{
   orders: [ 720 ]
 }];
 
+//Task1
 clients.findByName = function(name) {
-<<<<<<< HEAD
   return this.find(function(client) {
     return client.name === name;
   });
-=======
-  for (var client of clients) {
-    if(client.name === name) {
-    return client;
-    }
-  }
->>>>>>> fcec1b679d4fdebdac5e438ad35b7d7f839a4892
 };
 
 let client = clients.findByName('Доктор Джон Зоидберг');
@@ -44,21 +32,11 @@ console.log('\n');
 
 //Task2;
 function compareByTotalSumm(left, right) {
-<<<<<<< HEAD
     let summ = function(memo, el) {
       return memo + el;
     };
     let leftSumm = left.orders.reduce(summ, 0);
     let rightSumm = right.orders.reduce(summ, 0);
-=======
-  
-    let leftSumm = left.orders.reduce(function(memo, el) {
-      return memo + el;
-    }, 0);
-    let rightSumm = right.orders.reduce(function(memo, el) {
-      return memo + el;
-    }, 0);
->>>>>>> fcec1b679d4fdebdac5e438ad35b7d7f839a4892
     
   return rightSumm - leftSumm;
 }
@@ -73,24 +51,14 @@ function sendMail(email) {
   console.log(`Письмо отправлено на адрес ${email}`);
 }
 function getSubscribedEmails(list) {
-<<<<<<< HEAD
   
   return list.reduce(function(memo, people) {
    
    return people.isSubscribed === true ? memo.concat(people.email) : memo;
   }, []);
-=======
-  const emails = [];
-  for(let people of list) {
-    if(people.isSubscribed === true) {
-      emails.push(people.email);
-    }
-  }
-  return emails;
->>>>>>> fcec1b679d4fdebdac5e438ad35b7d7f839a4892
 }
+  
 getSubscribedEmails(clients).forEach(sendMail);
-
 /*Домашнее задание к лекции 2.5 «Прототип и конструктор массива»
 Перед началом работы
 Активируйте строгий режим соответствия.
