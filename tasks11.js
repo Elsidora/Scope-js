@@ -19,11 +19,9 @@ const clients = [{
 }];
 
 clients.findByName = function(name) {
-  for (let client of clients) {
-    if(client.name === name) {
-    return client;
-    }
-  }
+  return this.find(function(client) {
+    return client.name === name;
+  });
 };
 
 let client = clients.findByName('Доктор Джон Зоидберг');
@@ -34,13 +32,11 @@ console.log('\n');
 
 //Task2;
 function compareByTotalSumm(left, right) {
-  
-    let leftSumm = left.orders.reduce(function(memo, el) {
+    let summ = function(memo, el) {
       return memo + el;
-    }, 0);
-    let rightSumm = right.orders.reduce(function(memo, el) {
-      return memo + el;
-    }, 0);
+    };
+    let leftSumm = left.orders.reduce(summ, 0);
+    let rightSumm = right.orders.reduce(summ, 0);
     
   return rightSumm - leftSumm;
 }
@@ -55,13 +51,11 @@ function sendMail(email) {
   console.log(`Письмо отправлено на адрес ${email}`);
 }
 function getSubscribedEmails(list) {
-  const emails = [];
-  for(let people of list) {
-    if(people.isSubscribed === true) {
-      emails.push(people.email);
-    }
-  }
-  return emails;
+  
+  return list.reduce(function(memo, people) {
+   
+   return people.isSubscribed === true ? memo.concat(people.email) : memo;
+  }, []);
 }
 getSubscribedEmails(clients).forEach(sendMail);
 
